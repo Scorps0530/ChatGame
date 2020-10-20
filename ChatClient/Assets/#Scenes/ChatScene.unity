@@ -306,6 +306,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 073fde47f93e2a8448890f1e5047fc14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chatPanel: {fileID: 0}
+  textPrefab: {fileID: 0}
+  chatBox: {fileID: 0}
 --- !u!4 &481213546
 Transform:
   m_ObjectHideFlags: 0
@@ -556,7 +559,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.0001339461}
   m_SizeDelta: {x: 0, y: 675}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &898399564
