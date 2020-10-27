@@ -12,18 +12,20 @@ public class ChatNetwork : MonoBehaviour
     void Start()
     {
         GameObject go = GameObject.Find("SocketIO");
-        socket = go.GetComponent<SocketIOComponent>(); // socket.io 가져오기
-        chatManager = GetComponent<ChatManager>();  // ChatManager.cs 가져오기          
+        socket = go.GetComponent<SocketIOComponent>();
+        chatManager = GetComponent<ChatManager>();
 
         socket.On("open", TestOpen);
         socket.On("error", TestError);
         socket.On("close", TestClose);
 
         socket.On("broadcastMsg", OnBroadcastMsg);
-
+        socket.On("joinNewUser", OnJoinNewUser);
+        socket.On("disconnetUser", OnDissconnectUser);
     }
 
-    #region 송신 메시지 처리
+    #region 송신 이벤트 처리
+    // 새로운 메시지 송신 이벤트
     public void SendMsgToServer(string msg)
     {
         Dictionary<string, string> data = new Dictionary<string, string>();
@@ -31,12 +33,34 @@ public class ChatNetwork : MonoBehaviour
         JSONObject jObject = new JSONObject(data);
         socket.Emit("newMsg", jObject);
     }
+
+    // 새로운 사용자 접속 송신 이벤트
+    public void JoinNewUser()
+    {
+        Dictionary<string, string> data = new Dictionary<string, string>();
+        data.Add("userName", GameManager.instance.UserName);
+        JSONObject jObject = new JSONObject(data);
+        socket.Emit("joinNewUser", jObject);
+    }
     #endregion
 
     #region 수신 이벤트 처리
+    // 메시지 수신 이벤트
     private void OnBroadcastMsg(SocketIOEvent obj)
     {
         chatManager.SendMsgToChat(obj.data.GetField("msg").str);
+    }
+
+    // 새로운 사용자 접속 알림 이벤트
+    private void OnJoinNewUser(SocketIOEvent obj)
+    {
+        chatManager.JoinNewUserToChat(obj.data.GetField("userName").str);
+    }
+
+    // 사용자 접속 끊김 알림 이벤트
+    private void OnDissconnectUser(SocketIOEvent obj)
+    {
+        chatManager.DisconnectUserToChat(obj.data.GetField("userName").str);
     }
 
     public void TestOpen(SocketIOEvent e)

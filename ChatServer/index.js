@@ -14,4 +14,18 @@ io.on('connection', function(socket){
         console.log('newMsg 이벤트 발생 : ', data);      // 클라이언트로부터 받은 데이터
         io.emit('broadcastMsg', {msg: data.msg})     // 모든 클라이언트에게 메시지 전송
     })
+
+    // 새로운 사용자 접속 이벤트
+    socket.on('joinNewUser', (data)=>{
+        socket.userName = data.userName;
+        console.log('joinNewUser 이벤트 발생 : ', data);      // 클라이언트로부터 받은 데이터
+        io.emit('joinNewUser', {userName: data.userName})     // 모든 클라이언트에게 메시지 전송
+    })
+
+    // 클라이언트 접속 해지 이벤트
+    socket.on('disconnect', (reason)=>{
+        console.log(`${socket.userName} 접속 해제`)
+        console.log('reason', reason);
+        io.emit('disconnetUser', {userName: socket.userName})
+    })
 })

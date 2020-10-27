@@ -13,6 +13,7 @@ public class ChatManager : MonoBehaviour
     private void Start()
     {
         chatNetwork = GetComponent<ChatNetwork>();
+        Invoke("JoinNewUser", 1f);
     }
 
     void Update()
@@ -37,10 +38,28 @@ public class ChatManager : MonoBehaviour
         }
     }
 
+    // 새로운 사용자 접속 알림
+    private void JoinNewUser()
+    {
+        chatNetwork.JoinNewUser();
+    }
+
     // 채팅창에 새로운 텍스트를 출력하는 메서드
     public void SendMsgToChat(string text)
     {
         GameObject newText = Instantiate(textPrefab, contentPanel.transform);
         newText.GetComponent<Text>().text = text;
+    }
+
+    public void JoinNewUserToChat(string userName)
+    {
+        GameObject newText = Instantiate(textPrefab, contentPanel.transform);
+        newText.GetComponent<Text>().text = $"{userName}님이 입장하셨습니다.";
+    }
+
+    internal void DisconnectUserToChat(string userName)
+    {
+        GameObject newText = Instantiate(textPrefab, contentPanel.transform);
+        newText.GetComponent<Text>().text = $"{userName}님이 퇴장하셨습니다.";
     }
 }
