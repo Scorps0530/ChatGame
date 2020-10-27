@@ -5,15 +5,42 @@ using UnityEngine.UI;
 
 public class ChatManager : MonoBehaviour
 {
-    public GameObject chatPanel, textPrefab;
-    public InputField chatBox;
+    // UI 요소 연결
+    public GameObject contentPanel, textPrefab;
+    public InputField chatInputField;
+    private ChatNetwork chatNetwork;
 
-    private void Update()
+    private void Start()
     {
-        // 키보드 입력 감지 -> 입력한 내용을 SendMagToServer() 메서드로 전달
-        if(Input.GetKeyDown(KeyCode.Return)) // Enter 키
+        chatNetwork = GetComponent<ChatNetwork>();
+    }
+
+    void Update()
+    {
+        if (chatInputField.text != "")
         {
-            // 입력한 내용을 SendMagToServer() 메서드로 전달
+            // [Enter]키가 눌리면 화면에 InputField에 입력된 텍스트 출력
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                //SendMsgToChat(chatInputField.text);
+                chatNetwork.SendMsgToServer(chatInputField.text);
+                chatInputField.text = "";
+                chatInputField.ActivateInputField();    // InputField에 포커스두기
+            }
         }
+        else
+        {
+            if (!chatInputField.isFocused && Input.GetKeyDown(KeyCode.Return))
+            {
+                chatInputField.ActivateInputField();
+            }
+        }
+    }
+
+    // 채팅창에 새로운 텍스트를 출력하는 메서드
+    public void SendMsgToChat(string text)
+    {
+        GameObject newText = Instantiate(textPrefab, contentPanel.transform);
+        newText.GetComponent<Text>().text = text;
     }
 }
