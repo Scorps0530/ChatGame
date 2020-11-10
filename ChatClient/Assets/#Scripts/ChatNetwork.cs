@@ -25,6 +25,8 @@ public class ChatNetwork : MonoBehaviour
 
         socket.On("playGame", OnPlayGame);
         socket.On("responseQuiz", OnResponseQuiz);
+        socket.On("rightAnswer", OnRightAnswer);
+        socket.On("wrongAnswer", OnWrongAnswer);
     }
 
     #region 송신 이벤트 처리
@@ -80,26 +82,27 @@ public class ChatNetwork : MonoBehaviour
         chatManager.ShowQuiz(obj.data.GetField("quiz").str);
     }
 
+    // 정답을 맞춘 사람이 있는 경우 실행되는 메소드
+    private void OnRightAnswer(SocketIOEvent obj)
+    {
+        //GetComponent<soundManager>().AudioPlayCorrectAnswer();
+        string userName = obj.data.GetField("userName").str;
+        print($"정답자: {userName}");
+        chatManager.RightAnswer(userName);
+        print($"사용자 점수 : {obj.data.GetField("scores").ToString()}");
+    }
+
+    private void OnWrongAnswer(SocketIOEvent obj)
+    {
+        //GetComponent<soundManager>().AudioPlayWrongAnswer();
+        chatManager.WrongAnswer();
+    }
+
     // 사용자 접속 끊김 알림 이벤트
     private void OnDissconnectUser(SocketIOEvent obj)
     {
         chatManager.DisconnectUserToChat(obj.data.GetField("userName").str);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public void TestOpen(SocketIOEvent e)
     {

@@ -16,6 +16,10 @@ public class ChatManager : MonoBehaviour
     public Text QuizText;
     public Text AlertText;
 
+    /* 파티클 효과 */
+    public GameObject rightAnswerEffect, wrongAnswerEffect;
+    public Transform answerEffectPosition;
+
     private void Start()
     {
         chatNetwork = GetComponent<ChatNetwork>();
@@ -82,6 +86,7 @@ public class ChatManager : MonoBehaviour
     internal void ShowQuiz(string quiz)
     {
         Debug.Log("Show Quiz");
+        QuizText.text = quiz;
     }
 
     // 게임 시작 메서드
@@ -100,6 +105,21 @@ public class ChatManager : MonoBehaviour
         }
         AlertText.text = "";
         chatNetwork.RequestQuiz();     // 서버에 퀴즈 요청
+    }
+
+    public void RightAnswer(string userName)
+    {
+        AlertText.text = $"{userName} 정답!";
+        //GameObject effect = Instantiate(rightAnswerEffect, answerEffectPosition.position, Quaternion.identity);
+        //Destroy(effect, 2f);
+        Invoke("RequestQuiz", 3f);
+    }
+
+    public void WrongAnswer()
+    {
+        AlertText.text = "오답!!!";
+        //GameObject effect = Instantiate(wrongAnswerEffect, answerEffectPosition.position, Quaternion.identity);
+        //Destroy(effect, 2f);
     }
 
     // 사용자 퇴장 알림 출력 메서드

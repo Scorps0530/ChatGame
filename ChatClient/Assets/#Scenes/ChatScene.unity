@@ -312,6 +312,9 @@ MonoBehaviour:
   chatInputField: {fileID: 1371476479}
   QuizText: {fileID: 1069541443}
   AlertText: {fileID: 932809551}
+  rightAnswerEffect: {fileID: 0}
+  wrongAnswerEffect: {fileID: 0}
+  answerEffectPosition: {fileID: 0}
 --- !u!4 &481213546
 Transform:
   m_ObjectHideFlags: 0

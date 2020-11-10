@@ -414,7 +414,7 @@ ScriptsOnlyBuild:
     className: SpriteSkinEntity
   - hash:
       serializedVersion: 2
-      Hash: e16a0302a6427815c16c282f53d3a39a
+      Hash: 362e1fde79e4d0636aacaa669588def7
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ChatManager
